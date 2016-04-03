@@ -1,0 +1,3 @@
+# git ignore file
+gpuMFEM.sdf
+gpuMFEM\Debug*/
