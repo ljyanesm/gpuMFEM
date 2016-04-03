@@ -1135,8 +1135,8 @@ int selected_index = -1;
 
 int what=0;//0-displacements, 1-stresses, 2-strains
 
-const int width  = 1024;
-const int height = 1024;
+const int width  = 800;
+const int height = 600;
 int numX = 10, numY=5, numZ=5;
 const int total_points = numX*numY*numZ;
 
@@ -1434,6 +1434,23 @@ void OnIdle() {
 	glutPostRedisplay();
 }
 
+std::string parallelismTypeString(DeformableModel::ParallelismType type_parallelism){
+	std::string ret;
+	switch (type_paralellism){
+		case DeformableModel::ParallelismType::NONE:
+			ret += "NONE";
+		break;
+		case DeformableModel::ParallelismType::CUDA:
+			ret += "CUDA";
+		break;
+		case DeformableModel::ParallelismType::OPENMP:
+			ret += "OPENMP";
+		break;
+	}
+	ret += "\n";
+	return ret;
+}
+
 void OnKey(unsigned char k,int , int) {
 	switch(k) {
 	case 'a':whichIndex--;break;
@@ -1452,12 +1469,13 @@ void OnKey(unsigned char k,int , int) {
 	case '2':type_paralellism = DeformableModel::ParallelismType::CUDA;break;
 	case ' ':phys_model->togglePaused();break;
 	}
-
+	std::cout << parallelismTypeString(type_paralellism) << std::endl;
 	whichIndex = (whichIndex%total_points);
 	glutPostRedisplay();
 
 }
 int main(int argc, char** argv) {
+	std::cout << ".." << std::endl;
 	atexit(OnShutdown);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
